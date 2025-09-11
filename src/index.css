@@ -1,7 +1,5 @@
 @import "tailwindcss";
 
-@variant dark (.dark &);
-
 @theme {
   --default-transition-duration: 150ms;
   /* Green/Nature Primary Colors */
