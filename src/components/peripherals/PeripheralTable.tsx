@@ -24,10 +24,6 @@ export const PeripheralTable: React.FC<PeripheralTableProps> = ({
     setExpandedRows(newExpandedRows);
   };
 
-  const formatDate = (dateString: string) => {
-    return new Date(dateString).toLocaleDateString();
-  };
-
   const getStatusBadge = (status: string) => {
     const baseClasses = "status-badge";
     switch (status) {
