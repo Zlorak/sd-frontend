@@ -32,6 +32,7 @@ export const RestockRequestForm: React.FC<RestockRequestFormProps> = ({
   const [models, setModels] = useState<Model[]>([]);
   const [loadingMakes, setLoadingMakes] = useState(false);
   const [loadingModels, setLoadingModels] = useState(false);
+  const [isInitialized, setIsInitialized] = useState(false);
 
   useEffect(() => {
     if (restockRequest) {
@@ -48,6 +49,7 @@ export const RestockRequestForm: React.FC<RestockRequestFormProps> = ({
         notes: restockRequest.notes || '',
       });
     }
+    setIsInitialized(true);
   }, [restockRequest]);
 
   // Load makes when category changes
@@ -84,10 +86,12 @@ export const RestockRequestForm: React.FC<RestockRequestFormProps> = ({
     };
 
     loadMakes();
-    // Reset make and model when category changes
-    setFormData(prev => ({ ...prev, make_id: '', model_id: '' }));
-    setModels([]);
-  }, [formData.item_category]);
+    // Reset make and model when category changes (but not during initialization)
+    if (isInitialized && !restockRequest) {
+      setFormData(prev => ({ ...prev, make_id: '', model_id: '' }));
+      setModels([]);
+    }
+  }, [formData.item_category, isInitialized, restockRequest]);
 
   // Load models when make changes
   useEffect(() => {
@@ -111,9 +115,11 @@ export const RestockRequestForm: React.FC<RestockRequestFormProps> = ({
     };
 
     loadModels();
-    // Reset model when make changes
-    setFormData(prev => ({ ...prev, model_id: '' }));
-  }, [formData.make_id]);
+    // Reset model when make changes (but not during initialization)
+    if (isInitialized && !restockRequest) {
+      setFormData(prev => ({ ...prev, model_id: '' }));
+    }
+  }, [formData.make_id, isInitialized, restockRequest]);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();

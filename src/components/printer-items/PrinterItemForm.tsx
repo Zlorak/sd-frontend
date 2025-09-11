@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { PrinterItem, PrinterItemFormData } from '@/types/inventory';
+import { MakeModelSelector } from '@/components/common/MakeModelSelector';
 
 interface PrinterItemFormProps {
   printerItem?: PrinterItem | null;
@@ -89,29 +90,14 @@ export const PrinterItemForm: React.FC<PrinterItemFormProps> = ({
             </select>
           </div>
           
-          <div>
-            <label className="form-label">Make</label>
-            <input
-              type="text"
-              name="make"
-              value={formData.make}
-              onChange={handleChange}
-              className="form-input full-width"
-              placeholder="e.g., HP, Canon, Epson"
-            />
-          </div>
-          
-          <div>
-            <label className="form-label">Model</label>
-            <input
-              type="text"
-              name="model"
-              value={formData.model}
-              onChange={handleChange}
-              className="form-input full-width"
-              placeholder="e.g., LaserJet Pro 400, All HP printers"
-            />
-          </div>
+          <MakeModelSelector
+            category="printer"
+            makeValue={formData.make || ''}
+            modelValue={formData.model || ''}
+            onMakeChange={(make) => setFormData(prev => ({ ...prev, make: make || undefined }))}
+            onModelChange={(model) => setFormData(prev => ({ ...prev, model: model || undefined }))}
+            disabled={loading}
+          />
           
           <div>
             <label className="form-label">Quantity *</label>
